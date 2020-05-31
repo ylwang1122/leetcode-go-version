@@ -1,0 +1,19 @@
+func productExceptSelf(nums []int) []int {
+    // 1 求得全数组的总乘积，再除以每一项的 如果遇到0，会全盘失败
+    // 2 左侧乘积数组，右侧所有乘积的数组
+    outs := make([]int, len(nums))
+    k := 1 // 记录当前元素左侧所有数据的乘积
+    for i := 0; i < len(nums); i++ {
+        outs[i] = k
+        k = k * nums[i]
+    }
+ 
+    k = 1 // 记录当前元素右侧所有数值的乘积
+    for i := len(nums) - 1; i >= 0; i-- {
+        outs[i] = outs[i] * k
+        k = k * nums[i]
+    }
+    return outs
+}
+//runtime:16 ms
+//memory:6.3 MB

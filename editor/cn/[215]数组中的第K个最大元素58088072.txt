@@ -1,0 +1,43 @@
+func findKthLargest(nums []int, k int) int {
+    // 快排实现 查找倒数第N-k个元素
+    target := 0
+    fastQuick(&nums, 0, len(nums) - 1, k, &target)
+    return target
+}
+
+func fastQuick (nums *[]int, left, right int, k int, target *int) {
+    if left > right {
+        return 
+    }
+
+    index := getIndex(nums, left, right)
+    if index == right - k + 1 {
+        *target = (*nums)[index]
+        return 
+    }
+
+    if index < right - k + 1 {
+        // 在右边
+        fastQuick(nums, index + 1, right, k, target)
+    } else {
+        fastQuick(nums, left, index - 1, k - (right - index) - 1, target)
+    }
+}
+
+func getIndex(nums *[]int, left, right int) int {
+    tmp := (*nums)[left]
+    for left < right {
+        for left < right && (*nums)[right] >= tmp {
+            right--
+        }
+        (*nums)[left] = (*nums)[right]
+        for left < right && (*nums)[left] <= tmp {
+            left++
+        }
+        (*nums)[right] = (*nums)[left]
+    }
+    (*nums)[left] = tmp
+    return left
+}
+//runtime:16 ms
+//memory:4 MB

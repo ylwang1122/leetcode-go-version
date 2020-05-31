@@ -1,0 +1,27 @@
+func wordBreak(s string, wordDict []string) bool {
+	if s == "" {
+		return true
+	}
+	// 定义状态d[i]表示以i结尾的字符能否被拆分
+	m := make(map[string]bool)
+	for _, value := range wordDict {
+		m[value] = true
+	}
+
+	d := make([]bool, len(s)+1)
+	d[0] = true
+
+	for i := 1; i < len(s) + 1; i++ {
+		for j := 0; j < i; j++ {
+			// 判定s[j:i]是否包含在m中
+			if d[j] && m[s[j:i]] {
+				d[i] = true
+				break
+			}
+		}
+	}
+	return d[len(s)]
+}
+
+//runtime:0 ms
+//memory:2.2 MB
